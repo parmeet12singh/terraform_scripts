@@ -73,3 +73,11 @@ variable "virtual_machine_name" {
 variable "virtual_machine_location" {
   type = string
 }
+
+variable "serverFarmName" {
+  type = string
+}
+
+variable "webAppName" {
+  type = string
+}

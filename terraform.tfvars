@@ -24,3 +24,6 @@ storage_account_replication_type = "LRS"
 
 virtual_machine_name = "vm-terraform"
 virtual_machine_location = "southindia"
+
+serverFarmName = "asp-app-plan-parmeet-example"
+webAppName = "web-app-parmeet-example"

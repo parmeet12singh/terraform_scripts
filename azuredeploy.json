@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1008.15138",
+      "templateHash": "16325559001506718153"
+    }
+  },
+  "parameters": {
+    "serverFarmName": {
+      "type": "string",      
+      "metadata": {
+        "description": "Name of the App Service Plan"
+      }
+    },
+    "webAppName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the App Service Web App"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    }
+  },
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('serverFarmName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "[parameters('serverFarmName')]"
+      },
+      "sku": {
+        "name": "F1",
+        "capacity": 1
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('webAppName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "[parameters('webAppName')]"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverFarmName'))]",
+        "siteConfig": {
+          "ftpsState": "FtpsOnly",
+          "minTlsVersion": "1.2",
+          "scmMinTlsVersion": "1.2"
+        },
+        "httpsOnly": true
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverFarmName'))]"
+      ]
+    }
+  ]
+}
